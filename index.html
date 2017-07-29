@@ -16,8 +16,24 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
+    <!-- Import Vega -->
+
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.0-beta.3/vega-lite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.0-beta.31/vega.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.14/vega-embed.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.3.3/vega-tooltip.min.css"></link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.3.3/vega-tooltip.min.js"></script>
+
+    <style>
+    /*
+      Color Palette:
+      http://www.colourlovers.com/palette/1930/cheer_up_emo_kid
+    */
+    </style>
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -35,9 +51,10 @@
             <li><a href="scene2.html">Scene 2</a></li>
             <li><a href="scene3.html">Scene 3</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
+    <!-- End Navbar -->
 
     <div class="container">
       <div class="starter-template">
@@ -81,5 +98,51 @@
       </div>
 
     </div><!-- /.container -->
+
+    <!-- Container for the visualization -->
+    <div id="vis-bar"></div>
+    <!-- Create Vega visualization -->
+    <script>
+    var vlSpec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+      "data": {
+        "url": "typekitfonts.csv"
+      },
+      // "transform": [
+      //   {
+      //     "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
+      //     "filter": { "field": "opensource", "equal": "t" }
+      //  }
+      // ],
+      "mark": "bar",
+      "width": 500,
+      "encoding": {
+        "y": {
+          "field": "familyname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "thirtydaypings",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "opensource", "type": "nominal",
+          "scale": {"range": ["#4ECDC4", "#C44D58"]}
+        }
+      }
+    };
+
+    // Embed the visualization in the container with id `vis`
+    var opt = {
+      mode: "vega-lite",
+      actions: false
+    };
+    vega.embed("#vis-bar", vlSpec, opt, function (error, result) {
+      console.log("here");
+      vegaTooltip.vegaLite(result.view, vlSpec);
+    });
+    </script>
   </body>
 </html>
