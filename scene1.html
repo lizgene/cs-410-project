@@ -48,23 +48,23 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="index.html">Home</a></li>
-            <li><a href="scene1.html">Scene 1</a></li>
+            <li class="active"><a href="scene1.html">Scene 1</a></li>
             <li><a href="scene2.html">Scene 2</a></li>
-            <li class="active"><a href="scene3.html">Scene 3</a></li>
+            <li><a href="scene3.html">Scene 3</a></li>
           </ul>
         </div>
       </div>
     </nav>
-    <!-- End Navbar -->
 
     <div class="container">
       <div class="starter-template">
         <div class="col-md-6">
-          <h1>Most Popular Foundries</h1>
-          <p>In this final scene, you can see a list of foundries in the Typekit library.</p>
-          <p>Hover over each bar in the chart to see a tooltip and find out which font families are available from each foundry.</p>
+          <h1>Open Source Availability</h1>
+          <p>In this first scene, you can see a list of fonts in the Typekit library sorted by their popularity and colored by their open source status.</p>
+          <p>Hover over each bar in the chart to see a tooltip and find out which foundry a font belongs to, and what its monthly usage looks like.</p>
           <div>
-            <a class="btn btn-success" href="scene2.html">&larr; Go Back</a>
+            <a class="btn btn-success" href="index.html">&larr; Go Back</a>
+            <a class="btn btn-success" href="scene2.html">Go Forward &rarr;</a>
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@
             <div class="card-header" role="tab" id="headingOne">
               <h3 class="mb-0">
                 <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="btn btn-info" aria-controls="collapseOne">
-                  About the Visualization, Scene 3
+                  About the Visualization, Scene 1
                 </button>
               </h3>
             </div>
@@ -86,8 +86,8 @@
 
                   <p>This project follows the <b>interactive slideshow</b> narrative visualization structure. This means that during each slide, the user can drill down and list some details they might be interested in. Or they can choose to continue on if they’re not interested in the details of this slide.</p>
 
-                  <p>During this second scene, the user can interact by hovering over various fonts in the visualization (the bar marks of the chart) and see more details about them if they are interested in maybe using them. They can also move from tab to tab in the visualization to filter on either English fonts or Non-English fonts.</p>
-                  <p>If uninterested, they can choose to continue on by clicking the "next" button or clicking a next scene in the navigation bar.</p>
+                  <p>During this first scene, the user can interact by hovering over various fonts in the visualization (the bar marks of the chart) and see more details about them if they are interested in maybe using them. They can also move from tab to tab in the visualization to filter on either Open Source fonts, Non-Open Source fonts, or see a list of All fonts colored by their open source status.</p>
+                  <p>Otherwise, they can choose to continue on by clicking the "next" button or clicking a next scene in the navigation bar.</p>
 
 
                   <h4>How does this utilize scenes?</h4>
@@ -116,16 +116,16 @@
       <div class="col-md-6">
         <table class="table table-bordered">
           <tr>
-            <td>Total # Foundries</td>
-            <td>115</td>
+            <td>Availability</td>
+            <td>Total # Fonts</td>
           </tr>
           <tr>
-            <td>Total # Font Families</td>
-            <td>749</td>
+            <td>Open Source</td>
+            <td>4,767</td>
           </tr>
           <tr>
-            <td>Total # Font Variations</td>
-            <td>5,000</td>
+            <td>Non-Open Source</td>
+            <td>233</td>
           </tr>
         </table>
       </div>
@@ -134,17 +134,21 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">English</a></li>
-          <li role="presentation"><a href="#non-english" aria-controls="non-english" role="tab" data-toggle="tab">Non-English</a></li>
+          <li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All Fonts</a></li>
+          <li role="presentation"><a href="#nos" aria-controls="nos" role="tab" data-toggle="tab">Non-Open Source</a></li>
+          <li role="presentation"><a href="#os" aria-controls="os" role="tab" data-toggle="tab">Open Source</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="english">
-            <div id="vis-english"></div>
+          <div role="tabpanel" class="tab-pane" id="all">
+            <div id="vis-all"></div>
           </div>
-          <div role="tabpanel" class="tab-pane" id="non-english">
-            <div id="vis-non-english"></div>
+          <div role="tabpanel" class="tab-pane active" id="nos">
+            <div id="vis-nos"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="os">
+            <div id="vis-os"></div>
           </div>
         </div>
 
@@ -153,7 +157,7 @@
     </div><!-- /.container -->
     <!-- Create Vega visualization -->
     <script>
-    var vlSpecEnglish = {
+    var vlSpecOs = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
         "url": "typekitfonts.csv"
@@ -161,7 +165,7 @@
       "transform": [
         {
           "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
-          "filter": { "field": "defaultlanguages", "in": ["en"] }
+          "filter": { "field": "opensource", "equal": "t" }
        }
       ],
       "mark": "bar",
@@ -178,12 +182,13 @@
           "type": "quantitative"
         },
         "color": {
-          "field": "defaultlanguages", "type": "nominal"
+          "field": "opensource", "type": "nominal",
+          "scale": {"range": ["#C44D58", "#C44D58"]}
         }
       }
     };
 
-    var vlSpecNonEnglish = {
+    var vlSpecNos = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
         "url": "typekitfonts.csv"
@@ -191,7 +196,7 @@
       "transform": [
         {
           "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
-          "filter": { "field": "defaultlanguages", "in": ["bn", "gu", "ja", "kn", "ko", "ta", "th", "zh-Hans", "zh-Hant"] }
+          "filter": { "field": "opensource", "equal": "f" }
        }
       ],
       "mark": "bar",
@@ -208,7 +213,40 @@
           "type": "quantitative"
         },
         "color": {
-          "field": "defaultlanguages", "type": "nominal"
+          "field": "opensource", "type": "nominal",
+          "scale": {"range": ["#4ECDC4", "#C44D58"]}
+        }
+      }
+    };
+
+
+    var vlSpecAll = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+      "data": {
+        "url": "typekitfonts.csv"
+      },
+      "transform": [
+        {
+          "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
+          "filter": { "field": "opensource", "in": ["t", "f"] }
+       }
+      ],
+      "mark": "bar",
+      "width": 500,
+      "encoding": {
+        "y": {
+          "field": "familyname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "thirtydaypings",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "opensource", "type": "nominal",
+          "scale": {"range": ["#4ECDC4", "#C44D58"]}
         }
       }
     };
@@ -219,12 +257,16 @@
       mode: "vega-lite",
       actions: false
     };
-    vega.embed("#vis-english", vlSpecEnglish, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecEnglish);
+    vega.embed("#vis-os", vlSpecOs, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecOs);
     });
 
-    vega.embed("#vis-non-english", vlSpecNonEnglish, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecNonEnglish);
+    vega.embed("#vis-nos", vlSpecNos, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecNos);
+    });
+
+    vega.embed("#vis-all", vlSpecAll, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecAll);
     });
     </script>
   </body>

@@ -16,8 +16,24 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
+    <!-- Import Vega -->
+
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.0-beta.3/vega-lite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.0-beta.31/vega.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.14/vega-embed.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.3.3/vega-tooltip.min.css"></link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.3.3/vega-tooltip.min.js"></script>
+
+    <style>
+    /*
+      Color Palette:
+      http://www.colourlovers.com/palette/1930/cheer_up_emo_kid
+    */
+    </style>
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -31,45 +47,186 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.html">Scene 1</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="scene1.html">Scene 1</a></li>
             <li class="active"><a href="scene2.html">Scene 2</a></li>
             <li><a href="scene3.html">Scene 3</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
+    <!-- End Navbar -->
 
     <div class="container">
       <div class="starter-template">
-        <h1>Scene 2</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <div class="col-md-6">
+          <h1>English vs. Non-English Fonts</h1>
+          <p>In this second scene, you can see a list of fonts in the Typekit library sorted by their popularity and colored by their language default: English or non-English.</p>
+          <p>Hover over each bar in the chart to see a tooltip and find out which foundry a font belongs to, and what its monthly usage looks like.</p>
+          <div>
+            <a class="btn btn-success" href="scene1.html">&larr; Go Back</a>
+            <a class="btn btn-success" href="scene3.html">Go Forward &rarr;</a>
+          </div>
+        </div>
       </div>
 
-      <div id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="card">
-          <div class="card-header" role="tab" id="headingOne">
-            <h3 class="mb-0">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                About the Visualization, Scene 2
-              </a>
-            </h3>
-          </div>
+      <div class="col-md-6">
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+              <h3 class="mb-0">
+                <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="btn btn-info" aria-controls="collapseOne">
+                  About the Visualization, Scene 2
+                </button>
+              </h3>
+            </div>
 
-          <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-            <div class="card-block">
-              <ul>
-                <li>Which narrative visualization structure</li>
-                <li>What was used to build the site</li>
-                <li>User interface elements</li>
-                <li>Annotations</li>
-                <li>Triggers</li>
-                <li>Parameters</li>
-              </ul>
+            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="card-block">
+                  <h4>How does this visualization follow a hybrid structure?</h4>
+
+                  <p>This project follows the <b>interactive slideshow</b> narrative visualization structure. This means that during each slide, the user can drill down and list some details they might be interested in. Or they can choose to continue on if they’re not interested in the details of this slide.</p>
+
+                  <p>During this second scene, the user can interact by hovering over various fonts in the visualization (the bar marks of the chart) and see more details about them if they are interested in maybe using them. They can also move from tab to tab in the visualization to filter on either English fonts or Non-English fonts.</p>
+                  <p>If uninterested, they can choose to continue on by clicking the "next" button or clicking a next scene in the navigation bar.</p>
+
+
+                  <h4>How does this utilize scenes?</h4>
+
+                  <p>Each scene follows a consistent layout and design, using Twitter bootstrap’s CSS library, and a standard color palette. This gives the user a sense of continuity and context between scenes. The navigation bar at the top of the page stays consistent between scenes, so the user can always navigate forward, back, or in-between while still understanding that they are within the same narrative context.</p>
+                  <p>Each slide also contains a “next” and/or “back” button, which enable User Interface <b>events</b>. The user interacts by clicking on a button on navigation bar item.</p>
+
+                  <h4>How does this utilize annotations?</h4>
+
+                  <p>The annotation in this scene is represented by the <b>legend</b> at the top-right of the chart and a <b>tooltip</b> when a mouse is hovered over the bars in the chart.</p>
+
+                  <h4>How does this utilize parameters?</h4>
+
+                  <p>This scene is hyperlinked to the next scene. The name of the next scene is passed as an <b>input parameter</b> to the button and navigation bar items.</p>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+    </div>
+
+    <div class="container">
+      <hr>
+      <div class="col-md-6">
+        <table class="table table-bordered">
+          <tr>
+            <td>Availability</td>
+            <td>Total # Fonts</td>
+          </tr>
+          <tr>
+            <td>English</td>
+            <td>4,965</td>
+          </tr>
+          <tr>
+            <td>Non-English</td>
+            <td>35</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="col-md-12">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">English</a></li>
+          <li role="presentation"><a href="#non-english" aria-controls="non-english" role="tab" data-toggle="tab">Non-English</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="english">
+            <div id="vis-english"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="non-english">
+            <div id="vis-non-english"></div>
+          </div>
+        </div>
+
+      </div>
+
     </div><!-- /.container -->
+    <!-- Create Vega visualization -->
+    <script>
+    var vlSpecEnglish = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+      "data": {
+        "url": "typekitfonts.csv"
+      },
+      "transform": [
+        {
+          "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
+          "filter": { "field": "defaultlanguages", "in": ["en"] }
+       }
+      ],
+      "mark": "bar",
+      "width": 500,
+      "encoding": {
+        "y": {
+          "field": "familyname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "thirtydaypings",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "defaultlanguages", "type": "nominal"
+        }
+      }
+    };
+
+    var vlSpecNonEnglish = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+      "data": {
+        "url": "typekitfonts.csv"
+      },
+      "transform": [
+        {
+          "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
+          "filter": { "field": "defaultlanguages", "in": ["bn", "gu", "ja", "kn", "ko", "ta", "th", "zh-Hans", "zh-Hant"] }
+       }
+      ],
+      "mark": "bar",
+      "width": 500,
+      "encoding": {
+        "y": {
+          "field": "familyname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "thirtydaypings",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "defaultlanguages", "type": "nominal"
+        }
+      }
+    };
+
+
+    // Embed the visualization in the container with id `vis`
+    var opt = {
+      mode: "vega-lite",
+      actions: false
+    };
+    vega.embed("#vis-english", vlSpecEnglish, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecEnglish);
+    });
+
+    vega.embed("#vis-non-english", vlSpecNonEnglish, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecNonEnglish);
+    });
+    </script>
   </body>
 </html>
