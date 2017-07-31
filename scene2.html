@@ -69,14 +69,14 @@
           <h1 class="tk-relation-two">English vs. Non-English Fonts</h1>
           <p>In this second scene, you can see a list of fonts in the Typekit library sorted by their popularity and colored by their language default: English or non-English.</p>
           <p>Hover over each bar in the chart to see a tooltip and find out which foundry a font belongs to, and what its monthly usage looks like.</p>
-          <div>
-            <a class="btn btn-success" href="scene1.html">&larr; Go Back</a>
-            <a class="btn btn-success" href="scene3.html">Go Forward &rarr;</a>
-          </div>
         </div>
       </div>
 
       <div class="col-md-6">
+        <div>
+          <a class="btn btn-success" href="scene1.html">&larr; Go Back</a>
+          <a class="btn btn-success" href="scene3.html">Go Forward &rarr;</a>
+        </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card">
             <div class="card-header" role="tab" id="headingOne">
@@ -146,11 +146,13 @@
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content">
+        <div class="tab-content" style="margin-top: 30px;">
           <div role="tabpanel" class="tab-pane active" id="english">
+            <h4 style="padding-left: 250px;">English Language Font Families</h4>
             <div id="vis-english"></div>
           </div>
           <div role="tabpanel" class="tab-pane" id="non-english">
+            <h4 style="padding-left: 250px;">Non-English Language Font Families</h4>
             <div id="vis-non-english"></div>
           </div>
         </div>
@@ -163,7 +165,7 @@
     var vlSpecEnglish = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -177,15 +179,19 @@
         "y": {
           "field": "familyname",
           "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
         },
         "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
-          "field": "defaultlanguages", "type": "nominal"
+          "field": "defaultlanguages", "type": "nominal",
+          "scale": {"range": ["#FF6B6B", "#FF6B6B"]},
+          "legend": {"title": "Default Language"}
         }
       }
     };
@@ -193,7 +199,7 @@
     var vlSpecNonEnglish = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -207,15 +213,18 @@
         "y": {
           "field": "familyname",
           "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
         },
         "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
-          "field": "defaultlanguages", "type": "nominal"
+          "field": "defaultlanguages", "type": "nominal",
+          "legend": {"title": "Default Language"}
         }
       }
     };
@@ -226,12 +235,45 @@
       mode: "vega-lite",
       actions: false
     };
+    var options = {
+      showAllFields: false,
+      fields: [
+        {
+          field: "familyname",
+          title: "Font Family",
+          formatType: "string"
+        },
+        {
+          field: "foundryname",
+          title: "Foundry",
+          formatType: "string"
+        },
+        {
+          field: "defaultlanguages",
+          title: "Language",
+          formatType: "string",
+          aggregate: "median"
+        },
+        {
+          field: "thirtydaypings",
+          title: "Monthly Usage (pings)",
+          formatType: "number",
+          aggregate: "sum"
+        },
+        {
+          field: "opensource",
+          title: "Open Source",
+          formatType: "string"
+        },
+      ],
+      colorTheme: "light"
+    };
     vega.embed("#vis-english", vlSpecEnglish, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecEnglish);
+      vegaTooltip.vegaLite(result.view, vlSpecEnglish, options);
     });
 
     vega.embed("#vis-non-english", vlSpecNonEnglish, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecNonEnglish);
+      vegaTooltip.vegaLite(result.view, vlSpecNonEnglish, options);
     });
     </script>
   </body>

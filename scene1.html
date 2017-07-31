@@ -68,14 +68,14 @@
           <h1 class="tk-relation-two">Open Source Availability</h1>
           <p>In this first scene, you can see a list of fonts in the Typekit library sorted by their popularity and colored by their open source status.</p>
           <p>Hover over each bar in the chart to see a tooltip and find out which foundry a font belongs to, and what its monthly usage looks like.</p>
-          <div>
-            <a class="btn btn-success" href="index.html">&larr; Go Back</a>
-            <a class="btn btn-success" href="scene2.html">Go Forward &rarr;</a>
-          </div>
         </div>
       </div>
 
       <div class="col-md-6">
+        <div>
+          <a class="btn btn-success" href="index.html">&larr; Go Back</a>
+          <a class="btn btn-success" href="scene2.html">Go Forward &rarr;</a>
+        </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card">
             <div class="card-header" role="tab" id="headingOne">
@@ -146,14 +146,17 @@
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane" id="all">
+        <div class="tab-content" style="margin-top: 30px;">
+          <div role="tabpanel" class="tab-pane active" id="all">
+            <h4 style="padding-left: 250px;">All Font Families</h4>
             <div id="vis-all"></div>
           </div>
-          <div role="tabpanel" class="tab-pane active" id="nos">
+          <div role="tabpanel" class="tab-pane" id="nos">
+            <h4 style="padding-left: 250px;">Non-Open Source Font Families</h4>
             <div id="vis-nos"></div>
           </div>
           <div role="tabpanel" class="tab-pane" id="os">
+            <h4 style="padding-left: 250px;">Open Source Font Families</h4>
             <div id="vis-os"></div>
           </div>
         </div>
@@ -166,7 +169,7 @@
     var vlSpecOs = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -180,16 +183,19 @@
         "y": {
           "field": "familyname",
           "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
         },
         "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
           "field": "opensource", "type": "nominal",
-          "scale": {"range": ["#C44D58", "#C44D58"]}
+          "scale": {"range": ["#C44D58", "#C44D58"]},
+          "legend": {"title": "Open Source Status (true/false)"}
         }
       }
     };
@@ -197,7 +203,7 @@
     var vlSpecNos = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -211,16 +217,19 @@
         "y": {
           "field": "familyname",
           "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
         },
         "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
           "field": "opensource", "type": "nominal",
-          "scale": {"range": ["#4ECDC4", "#C44D58"]}
+          "scale": {"range": ["#4ECDC4", "#C44D58"]},
+          "legend": {"title": "Open Source Status (true/false)"}
         }
       }
     };
@@ -229,7 +238,7 @@
     var vlSpecAll = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -243,18 +252,55 @@
         "y": {
           "field": "familyname",
           "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
         },
         "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
           "field": "opensource", "type": "nominal",
-          "scale": {"range": ["#4ECDC4", "#C44D58"]}
+          "scale": {"range": ["#4ECDC4", "#C44D58"]},
+          "legend": {"title": "Open Source Status (true/false)"}
         }
       }
+    };
+
+    var options = {
+      showAllFields: false,
+      fields: [
+        {
+          field: "familyname",
+          title: "Font Family",
+          formatType: "string"
+        },
+        {
+          field: "foundryname",
+          title: "Foundry",
+          formatType: "string"
+        },
+        {
+          field: "defaultlanguages",
+          title: "Language",
+          formatType: "string",
+          aggregate: "median"
+        },
+        {
+          field: "thirtydaypings",
+          title: "Monthly Usage (pings)",
+          formatType: "number",
+          aggregate: "sum"
+        },
+        {
+          field: "opensource",
+          title: "Open Source",
+          formatType: "string"
+        },
+      ],
+      colorTheme: "light"
     };
 
 
@@ -264,15 +310,15 @@
       actions: false
     };
     vega.embed("#vis-os", vlSpecOs, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecOs);
+      vegaTooltip.vegaLite(result.view, vlSpecOs, options);
     });
 
     vega.embed("#vis-nos", vlSpecNos, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecNos);
+      vegaTooltip.vegaLite(result.view, vlSpecNos, options);
     });
 
     vega.embed("#vis-all", vlSpecAll, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecAll);
+      vegaTooltip.vegaLite(result.view, vlSpecAll, options);
     });
     </script>
   </body>

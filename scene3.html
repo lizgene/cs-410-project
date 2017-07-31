@@ -67,15 +67,23 @@
       <div class="starter-template">
         <div class="col-md-6">
           <h1 class="tk-relation-two">Most Popular Foundries</h1>
-          <p>In this final scene, you can see a list of foundries in the Typekit library.</p>
+          <p>In this final scene, you can see a visualization of foundries in the Typekit library highlighting all of the metrics we explored previously:</p>
+          <p>
+            <ul>
+              <li>Foundries that provide open source fonts</li>
+              <li>Foundries that do not provide open source fonts</li>
+              <li>Foundries that provide English language fonts</li>
+              <li>Foundries that provide non-English language fonts</li>
+            </ul>
+          </p>
           <p>Hover over each bar in the chart to see a tooltip and find out which font families are available from each foundry.</p>
-          <div>
-            <a class="btn btn-success" href="scene2.html">&larr; Go Back</a>
-          </div>
         </div>
       </div>
 
       <div class="col-md-6">
+        <div>
+          <a class="btn btn-success" href="scene2.html">&larr; Go Back</a>
+        </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card">
             <div class="card-header" role="tab" id="headingOne">
@@ -92,8 +100,8 @@
 
                   <p>This project follows the <b>interactive slideshow</b> narrative visualization structure. This means that during each slide, the user can drill down and list some details they might be interested in. Or they can choose to continue on if they’re not interested in the details of this slide.</p>
 
-                  <p>During this second scene, the user can interact by hovering over various fonts in the visualization (the bar marks of the chart) and see more details about them if they are interested in maybe using them. They can also move from tab to tab in the visualization to filter on either English fonts or Non-English fonts.</p>
-                  <p>If uninterested, they can choose to continue on by clicking the "next" button or clicking a next scene in the navigation bar.</p>
+                  <p>During this third and final scene, the user is taken to a more high-level view of foundries specifically. They can interact by hovering over various foundries in the visualization (the bar marks of the chart) and see more details about them if they are interested in maybe using them.</p>
+                  <p>If uninterested, they can leave this area of the slideshow by clicking the "back" button or by navigating through the top navigation bar.</p>
 
 
                   <h4>How does this utilize scenes?</h4>
@@ -137,32 +145,110 @@
       </div>
 
       <div class="col-md-12">
-
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">English</a></li>
-          <li role="presentation"><a href="#non-english" aria-controls="non-english" role="tab" data-toggle="tab">Non-English</a></li>
+          <li role="presentation" class="active"><a href="#os" aria-controls="os" role="tab" data-toggle="tab">With Open Source Fonts</a></li>
+          <li role="presentation"><a href="#nos" aria-controls="nos" role="tab" data-toggle="tab">Without Open Source Fonts</a></li>
+          <li role="presentation"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">With English Fonts</a></li>
+          <li role="presentation"><a href="#non-english" aria-controls="non-english" role="tab" data-toggle="tab">With Non-English Fonts</a></li>
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="english">
-            <div id="vis-english"></div>
+        <div style="margin-top: 30px;" class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="os">
+            <h4 style="padding-left: 250px;">Foundries with Open Source Fonts</h4>
+            <div  id="vis-os"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="nos">
+            <h4 style="padding-left: 250px;">Foundries without Open Source Fonts</h4>
+            <div  id="vis-nos"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="english">
+            <h4 style="padding-left: 250px;">Foundries with English Fonts</h4>
+            <div  id="vis-english"></div>
           </div>
           <div role="tabpanel" class="tab-pane" id="non-english">
-            <div id="vis-non-english"></div>
+            <h4 style="padding-left: 250px;">Foundries with Non-English Fonts</h4>
+            <div  id="vis-non-english"></div>
           </div>
         </div>
-
       </div>
 
     </div><!-- /.container -->
     <!-- Create Vega visualization -->
     <script>
+    var vlSpecOS = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+      "data": {
+        "url": "finaldata.csv"
+      },
+      "transform": [
+        {
+          "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
+          "filter": { "field": "opensource", "in": ["t"] }
+       }
+      ],
+      "mark": "bar",
+      "width": 500,
+      "encoding": {
+        "y": {
+          "field": "foundryname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "thirtydaypings",
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
+        },
+        "color": {
+          "field": "opensource", "type": "nominal",
+          "scale": {"range": ["#4ECDC4", "#C44D58"]},
+          "legend": {"title": "Open Source Status (true/false)"}
+        }
+      }
+    };
+
+    var vlSpecNOS = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+      "data": {
+        "url": "finaldata.csv"
+      },
+      "transform": [
+        {
+          "summarize": [{"aggregate": "sum", "field": "thirtydaypings", "as": "tdp" }],
+          "filter": { "field": "opensource", "in": ["f"] }
+       }
+      ],
+      "mark": "bar",
+      "width": 500,
+      "encoding": {
+        "y": {
+          "field": "foundryname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "thirtydaypings",
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
+        },
+        "color": {
+          "field": "opensource", "type": "nominal",
+          "scale": {"range": ["#C44D58", "#C44D58"]},
+          "legend": {"title": "Open Source Status (true/false)"}
+        }
+      }
+    };
+
     var vlSpecEnglish = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -174,17 +260,21 @@
       "width": 500,
       "encoding": {
         "y": {
-          "field": "familyname",
+          "field": "foundryname",
           "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
         },
         "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
-          "field": "defaultlanguages", "type": "nominal"
+          "field": "defaultlanguages", "type": "nominal",
+          "scale": {"range": ["#FF6B6B", "#FF6B6B"]},
+          "legend": {"title": "Default Language"}
         }
       }
     };
@@ -192,7 +282,7 @@
     var vlSpecNonEnglish = {
       "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
       "data": {
-        "url": "typekitfonts.csv"
+        "url": "finaldata.csv"
       },
       "transform": [
         {
@@ -202,35 +292,77 @@
       ],
       "mark": "bar",
       "width": 500,
+      "height": 100,
       "encoding": {
-        "y": {
-          "field": "familyname",
-          "type": "ordinal",
-          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"}
-        },
         "x": {
+          "field": "foundryname",
+          "type": "ordinal",
+          "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
+          "axis": {"title": "Font Family"}
+        },
+        "y": {
           "aggregate": "sum",
           "field": "thirtydaypings",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {"title": "Monthly Usage (pings)"}
         },
         "color": {
-          "field": "defaultlanguages", "type": "nominal"
+          "field": "defaultlanguages", "type": "nominal",
+          "legend": {"title": "Default Language"}
         }
       }
     };
 
+    var options = {
+      showAllFields: false,
+      fields: [
+        {
+          field: "familyname",
+          title: "Font Family",
+          formatType: "string"
+        },
+        {
+          field: "foundryname",
+          title: "Foundry",
+          formatType: "string"
+        },
+        {
+          field: "defaultlanguages",
+          title: "Language",
+          formatType: "string",
+          aggregate: "median"
+        },
+        {
+          field: "thirtydaypings",
+          title: "Monthly Usage (pings)",
+          formatType: "number",
+          aggregate: "sum"
+        },
+        {
+          field: "opensource",
+          title: "Open Source",
+          formatType: "string"
+        },
+      ],
+      colorTheme: "light"
+    };
 
     // Embed the visualization in the container with id `vis`
     var opt = {
       mode: "vega-lite",
       actions: false
     };
-    vega.embed("#vis-english", vlSpecEnglish, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecEnglish);
+    vega.embed("#vis-os", vlSpecOS, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecOS, options);
     });
-
+    vega.embed("#vis-nos", vlSpecNOS, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecNOS, options);
+    });
+    vega.embed("#vis-english", vlSpecEnglish, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, vlSpecEnglish, options);
+    });
     vega.embed("#vis-non-english", vlSpecNonEnglish, opt, function (error, result) {
-      vegaTooltip.vegaLite(result.view, vlSpecNonEnglish);
+      vegaTooltip.vegaLite(result.view, vlSpecNonEnglish, options);
     });
     </script>
   </body>
