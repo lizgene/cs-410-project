@@ -168,7 +168,8 @@
             <div  id="vis-english"></div>
           </div>
           <div role="tabpanel" class="tab-pane" id="non-english">
-            <h4 style="padding-left: 250px;">Foundries with Non-English Fonts</h4>
+            <h4 style="padding-left: 50px;">Foundries with Non-English Fonts</h4>
+            <p style="padding-left: 50px;">There is only one foundry with non-English fonts: Adobe!</p>
             <div  id="vis-non-english"></div>
           </div>
         </div>
@@ -292,15 +293,15 @@
       ],
       "mark": "bar",
       "width": 500,
-      "height": 100,
+      "height": 50,
       "encoding": {
-        "x": {
+        "y": {
           "field": "foundryname",
           "type": "ordinal",
           "sort": { "op": "sum", "field": "thirtydaypings", "order":"descending"},
           "axis": {"title": "Font Family"}
         },
-        "y": {
+        "x": {
           "aggregate": "sum",
           "field": "thirtydaypings",
           "type": "quantitative",
