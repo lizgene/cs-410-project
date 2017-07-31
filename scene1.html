@@ -36,6 +36,18 @@
     h1 {
       font-size: 64px;
     }
+    footer {
+      position: fixed;
+      height: auto;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      padding-top: 15px;
+      border-top: 1px solid lightgrey;
+    }
+    body {
+      padding-bottom: 100px;
+    }
     </style>
   </head>
   <body>
@@ -73,7 +85,7 @@
 
       <div class="col-md-6">
         <div>
-          <a class="btn btn-success" href="index.html">&larr; Go Back</a>
+          <a class="btn btn-warning" href="index.html">&larr; Go Back</a>
           <a class="btn btn-success" href="scene2.html">Go Forward &rarr;</a>
         </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -164,6 +176,39 @@
       </div>
 
     </div><!-- /.container -->
+    <footer class="footer">
+      <div class="container">
+        <p style="font-size: 16px;" class="text-muted tk-relation-two">This site was created by <a href="https://github.com/lizhubertz" target="_blank">Liz Hubertz</a> <a class="pull-right" data-toggle="modal" data-target="#myModal" href="#">Software Citations</a></p>
+      </div>
+    </footer>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Software Citations</h4>
+          </div>
+          <div class="modal-body">
+            <h4>
+              <a href="//getbootstrap.com" target="_blank" >Bootstrap for HTML5</a>
+            </h4>
+            <h4>
+              <a href="//jquery.com" target="_blank" >jQuery</a>
+            </h4>
+            <h4>
+              <a href="//d3js.org" target="_blank" >D3.js (v4)</a>
+            </h4>
+            <h4>
+              <a href="//vega.github.io/vega-lite/" target="_blank" >Vega-Lite</a>
+            </h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!-- Create Vega visualization -->
     <script>
     var vlSpecOs = {
